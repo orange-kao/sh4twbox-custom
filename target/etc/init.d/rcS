@@ -2,6 +2,8 @@ echo "*** running: /etc/init.d/rcS $*"
 # check http://www.busybox.net/tinyutils.html for more tiny utils
 # vim:et sw=2 ts=2 ai:
 
+rm -fR /tmp/* /tmp/.*
+
 echo "dbg:mount fs"
 #mount -a
 mount -t proc proc /proc
