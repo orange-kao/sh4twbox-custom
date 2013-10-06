@@ -1,3 +1,0 @@
-echo "dbg:$0 in background `date`"
-sleep 10 # wait dhcp get ip
-busybox ntpd -dp watch.stdtime.gov.tw > /var/log/ntpd.log 2>&1

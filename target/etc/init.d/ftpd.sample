@@ -1,2 +1,0 @@
-echo "dbg:$0"
-busybox tcpsvd -vE 0.0.0.0 21 ftpd / > /var/log/ftpd.log 2>&1

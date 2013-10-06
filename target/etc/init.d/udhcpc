@@ -1,3 +1,0 @@
-echo "dbg:$0"
-ifconfig eth0 up
-udhcpc > /var/log/udhcpc.log 2>&1

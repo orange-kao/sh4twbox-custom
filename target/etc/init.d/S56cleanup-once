@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rm /root/run_a18.sh
+rm $0
+

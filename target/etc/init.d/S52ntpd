@@ -1,0 +1,8 @@
+#!/bin/sh
+
+while read content; do
+    list="$list -p $content"
+done < /etc/ntp-server-list
+
+ntpd $list
+

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -r /etc/ifcfg-eth0-alias ]; then
+    . /etc/ifcfg-eth0-alias
+    if [ "$ONBOOT" == "yes" ]; then
+        ifconfig eth0:1 $IPADDR netmask $NETMASK up
+    fi
+fi
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+tcpsvd 0.0.0.0 21 ftpd /var/ftp &
+

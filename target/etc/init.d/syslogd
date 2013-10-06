@@ -1,2 +1,0 @@
-echo "dbg:$0"
-syslogd

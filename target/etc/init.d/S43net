@@ -1,0 +1,17 @@
+#!/bin/sh
+
+ifconfig lo up
+
+if [ -r /etc/ifcfg-eth0 ]; then
+    . /etc/ifcfg-eth0
+    if [ "$BOOTPROTO" == "dhcp" ]; then
+        ifconfig eth0 up
+        udhcpc -b
+    elif [ "$IPADDR" != "" ]; then
+        ifconfig eth0 $IPADDR netmask $NETMASK up
+        if [ "$GATEWAY" != "" ]; then
+            route add default gw $GATEWAY
+        fi
+    fi
+fi
+
