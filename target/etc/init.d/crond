@@ -1,0 +1,3 @@
+echo "dbg:$0 in background `date`"
+# NOTE: crontab can not run symbolic executable like 'date', use 'busybox date'
+busybox crond -l 0 # the most verbose mode

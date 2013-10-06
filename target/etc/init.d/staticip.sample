@@ -1,0 +1,5 @@
+ip=192.168.2.2
+router=192.168.2.1
+echo "dbg:$0 ip=$ip router=$router"
+ifconfig eth0 $ip netmask 255.255.255.0 up
+route add default gw $router

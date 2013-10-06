@@ -1,0 +1,4 @@
+echo "dbg:$0"
+#/sbin/telnetd -p 9999 # login with password and special port
+#/sbin/telnetd -l /bin/sh # login without password
+/sbin/telnetd # login with password (run /etc/profile)

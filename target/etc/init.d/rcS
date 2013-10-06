@@ -1,0 +1,65 @@
+echo "*** running: /etc/init.d/rcS $*"
+# check http://www.busybox.net/tinyutils.html for more tiny utils
+# vim:et sw=2 ts=2 ai:
+
+echo "dbg:mount fs"
+#mount -a
+mount -t proc proc /proc
+echo "dbg:proc/cmdline: `cat /proc/cmdline`"
+mount -t sysfs sysfs /sys
+echo "dbg:remount root rw"
+mount -n -o remount,rw,noatime /
+
+if [ -f /etc/hostname ] ; then
+  echo "dbg:get hostname"
+  hostname -F /etc/hostname
+fi
+
+echo "dbg:mdev -s"
+echo /sbin/mdev > /proc/sys/kernel/hotplug
+mdev -s
+
+echo "dbg:mount devpts"
+mkdir -p /dev/pts
+mount -t devpts none /dev/pts -ogid=5,mode=620
+
+echo "dbg:sysctl -p"
+sysctl -p
+
+syslogd&
+
+if [ -r /target.tgz ] ; then
+  echo "dbg: copy /target.tgz to /dev/sda1"
+  mount /dev/sda1 /mnt/sda1
+  if [ $? -eq 0 ] ; then
+    cp /target.tgz /mnt/sda1
+    umount /mnt/sda1
+  fi
+fi
+
+echo "dbg:net"
+ifconfig lo up
+if [ -x /etc/init.d/staticip ] ; then
+  /etc/init.d/staticip start
+elif [ -x /etc/init.d/bridge ] ; then
+  /etc/init.d/bridge start
+elif [ -x /etc/init.d/udhcpc ] ; then
+  /etc/init.d/udhcpc start & # don't wait ip address
+fi
+
+if [ -x /etc/init.d/backupip ] ; then
+  /etc/init.d/backupip start
+fi
+
+echo "dbg:services"
+for d in syslod telnetd ntpd sshd ftpd crond ; do
+  if [ -x /etc/init.d/$d ] ; then
+    echo "dbg:starting service $d"
+    /etc/init.d/$d start &
+    sleep 1 # prevent mess up together
+  fi
+done
+if [ -x /etc/rc.local ] ; then
+  echo "dbg:calling /etc/rc.local"
+  exec /etc/rc.local
+fi
