@@ -28,15 +28,6 @@ sysctl -p
 
 syslogd&
 
-if [ -r /target.tgz ] ; then
-  echo "dbg: copy /target.tgz to /dev/sda1"
-  mount /dev/sda1 /mnt/sda1
-  if [ $? -eq 0 ] ; then
-    cp /target.tgz /mnt/sda1
-    umount /mnt/sda1
-  fi
-fi
-
 echo "dbg:net"
 ifconfig lo up
 if [ -x /etc/init.d/staticip ] ; then
