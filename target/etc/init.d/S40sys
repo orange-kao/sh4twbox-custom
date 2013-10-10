@@ -1,19 +1,26 @@
 #!/bin/sh
 
-#mount -a
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
-mount -n -o remount,rw,noatime /
 
-if [ -f /etc/hostname ] ; then
-    hostname -F /etc/hostname
-fi
+mount -t tmpfs tmpfs /dev
+ln -s ../proc/self/fd /dev/fd
+ln -s fd/0 /dev/stdin
+ln -s fd/1 /dev/stdout
+ln -s fd/2 /dev/stderr
+mkdir -p /dev/pts
+mount -t devpts none /dev/pts
+
+mount -t tmpfs tmpfs /tmp
+
+mount -n -o remount,rw,noatime /
 
 echo /sbin/mdev > /proc/sys/kernel/hotplug
 mdev -s
 
-mkdir -p /dev/pts
-mount -t devpts none /dev/pts -ogid=5,mode=620
-
 sysctl -p
+
+if [ -f /etc/hostname ]; then
+    hostname -F /etc/hostname
+fi
 

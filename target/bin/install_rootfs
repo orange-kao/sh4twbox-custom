@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ "$1" == "" ]; then
+    echo "Syntax: $0 rootfs_gzipped_tarball" 1>&2
+    exit 1
+fi
+
+mount_point=/tmp/recovery_partition
+
+mkdir -p ${mount_point}
+mount /dev/sda1 ${mount_point}
+if [ "$1" == "-" ]; then
+    cat /dev/stdin > ${mount_point}/target.tgz
+elif [ -f "$1" ]; then
+    cp $1 ${mount_point}/target.tgz
+else
+    echo "File '$1' not exist" 1>&2
+fi
+umount ${mount_point}
+sync
+
