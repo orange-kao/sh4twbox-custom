@@ -1,5 +1,10 @@
 .PHONY: all
 all:
+	@if ! [ -f sh4twbox-usb-auto-0.5.1-target.tgz ]; then \
+		echo "File 'sh4twbox-usb-auto-0.5.1-target.tgz' not exist"; \
+		echo "You may extract it from sh4twbox-usb-auto-0.5.1.dd"; \
+		exit 1; \
+		fi
 	-tar zxf sh4twbox-usb-auto-0.5.1-target.tgz
 	rm mnt_system/etc/init.d/*
 	rm mnt_system/root/*
